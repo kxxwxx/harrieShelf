@@ -3,7 +3,7 @@
 
     <head>
         <!-- Webpage Title -->
-        <title>HARIRIE SHELF</title>
+        <title>서가에 책 꽂기 | HARRIE SHELF</title>
 
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -29,6 +29,40 @@
 
         <script type="text/javascript">
 
+            function saveReview() {
+
+                // 1. 제목, 저자, 리뷰 내용을 가져옵니다.
+                let user = $('#user').val();
+                let type = $('#type').val();
+                let title = $('#title').val();
+                let author = $('#author').val();
+                let url = $('#url').val();
+                let sentence = $('#sentence').val();
+                let memo = $('#memo').val();
+
+                // 2. 제목, 저자, 리뷰 중 하나라도 입력하지 않았을 경우 alert를 띄웁니다. -> 나중에
+
+                // 3. POST /review 에 저장을 요청합니다.
+                $.ajax({
+                    type: "POST",
+                    url: "/write",
+                    data: {
+                        user: user,
+                        type: type,
+                        title: title,
+                        author: author,
+                        url: url,
+                        sentence: sentence,
+                        memo: memo
+                    },
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            alert(response["msg"]);
+                            window.location.reload();
+                        }
+                    }
+                })
+            }
         </script>
 
         <style type="text/css">
@@ -54,9 +88,9 @@
             <!--            <img src="https://image.freepik.com/free-vector/large-bookcase-with-books-library-book-shelf-interior_92863-357.jpg"-->
             <!--                 class="img-fluid" alt="Responsive image">-->
             <div class="intro">
-                <h1 class="title">어떤 책을 읽으셨어요?</h1>
+                <h1 class="title">어떤 책을 읽으셨어요?📚 </h1>
                 <p>해리언을 위해 읽은 책, 기사에 대한 내용을 남겨주세요.
-                    <br> 기록한 책의 내용은 개인 서가에 꽂히게 됩니다.</p>
+                    <br> 기록한 내용은 개인 서가에 꽂히게 됩니다.</p>
             </div>
 
             <div>
@@ -65,7 +99,7 @@
                     <label class="label">작성자</label>
                     <div class="control">
                         <div class="select is-success">
-                            <select>
+                            <select id="user">
                                 <option>규원</option>
                                 <option>리아</option>
                                 <option>재은</option>
@@ -81,7 +115,7 @@
                     <label class="label">구분</label>
                     <div class="control">
                         <div class="select is-success">
-                            <select>
+                            <select id="type">
                                 <option>소설책</option>
                                 <option>실용서적</option>
                                 <option>기사</option>
@@ -93,36 +127,48 @@
                 <div class="field">
                     <label class="label">제목</label>
                     <div class="control">
-                        <input class="input is-success" type="text" placeholder="책 제목을 입력해주세요">
+                        <input class="input is-success" type="text" id="title" placeholder="책 제목을 입력해주세요">
                     </div>
                 </div>
 
                 <div class="field">
                     <label class="label">저자</label>
                     <div class="control">
-                        <input class="input is-success" type="text" placeholder="저자를 입력해주세요">
+                        <input class="input is-success" type="text" id="author" placeholder="저자를 입력해주세요">
                     </div>
                 </div>
 
                 <div class="field">
                     <label class="label">URL</label>
                     <div class="control">
-                        <input class="input is-success" type="text" placeholder="기사라면 URL을 작성해주세요">
+                        <input class="input is-success" type="text" id="url" placeholder="기사라면 URL을 작성해주세요">
                     </div>
                 </div>
 
                 <div class="field">
-                    <label class="label">기억하고 싶은 내용</label>
+                    <label class="label">마음에 닿은 문장</label>
                     <div class="control">
-                        <textarea class="textarea is-success"
+                        <textarea class="textarea is-success" id="sentence"
                                   placeholder="어떤 내용이 마음에 와닿았나요? 오래 기억하고 싶은 문장을 기록해주세요."></textarea>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">함께 기억하고 싶은 메모</label>
+                    <div class="control">
+                        <textarea class="textarea is-success" id="memo"
+                                  placeholder="해리언과 공유하고 싶은 이유가 있나요? 메모를 남겨주세요."></textarea>
                     </div>
                 </div>
 
                 <div class="field is-grouped">
                     <div class="control">
-                        <button class="button is-success is-rounded is-focused">내 서가에 책
+                        <button onclick="saveReview()" class="button is-success is-rounded is-focused">내 서가에 책
                             꽂기
+                        </button>
+                    </div>
+                    <div class="control">
+                        <button onclick = "location.href = '/myShelf'" class="button is-light is-rounded is-focused">내 서가 보러 가기
                         </button>
                     </div>
                 </div>
