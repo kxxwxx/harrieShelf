@@ -40,16 +40,21 @@ def write_review():
     return jsonify({'result': 'success', 'msg': '기록해주셔서 감사합니다!'})
 
 
-@app.route('/myShelf')
+@app.route('/myshelf')
 def get_myshelf_page():
     return render_template('myShelf.html')
 
+@app.route('/profile')
+def get_profile_page():
+    return render_template('profile.html')
 
-@app.route('/myShelf', methods=['GET'])
-def read_review():
-    # 1. 모든 reviews의 문서를 가져온 후 list로 변환합니다.
-    # 2. 성공 메시지와 함께 리뷰를 보냅니다.
-    return jsonify({'result': 'success'})
+
+@app.route('/write', methods=['GET'])
+def read_reviews():
+    # 1. DB에서 리뷰 정보 모두 가져오기
+    reviews = list(db.reviews.find({}, {'_id': 0}))
+    # 2. 성공 여부 & 리뷰 목록 반환하기
+    return jsonify({'result': 'success', 'reviews': reviews})
 
 
 if __name__ == '__main__':
