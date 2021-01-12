@@ -11,6 +11,7 @@
 
         <!-- Bulma CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
         <!-- JS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -27,28 +28,123 @@
               rel="stylesheet">
 
         <script type="text/javascript">
+
+            $(document).ready(function () {
+                $("#reviews-box").html("");
+                showReview();
+            });
+
             function showReview() {
+                $('#novel-box').empty()
+
                 // 1. 리뷰 목록을 서버에 요청하기
-                // 2. 요청 성공 여부 확인하기
-                // 3. 요청 성공했을 때 리뷰를 올바르게 화면에 나타내기
                 $.ajax({
                     type: "GET",
-                    url: "/myShelf",
+                    url: "/write",
                     data: {},
                     success: function (response) {
-                        if (response['result'] == 'success') {
-                            alert('기록을 성공적으로 불러왔습니다');
+                        // 2. 요청 성공 여부 확인하기
+                        if (response["result"] == "success") {
+                            let reviews = response["reviews"];
+                            // 3. 요청 성공했을 때 리뷰를 올바르게 화면에 나타내기
+                            for (let i = 0; i < reviews.length; i++) {
+                                makeCard(reviews[i]["title"], reviews[i]["author"], reviews[i]["url"], reviews[i]["sentence"], reviews[i]["memo"]);
+                            }
                         } else {
-                            alert('기록을 받아오지 못했습니다');
+                            alert("리뷰를 받아오지 못했습니다");
                         }
                     }
                 })
             }
+
+
+            function makeCard(title, author, url, sentence, memo) {
+                let tempHtml = `<div class="column is-one-third">
+                                    <div class="card">
+                                    <div class="card-content">
+                                      <div class="media">
+                                        <div class="media-content">
+                                          <a href="${url}" class="review-title title is-4">${title}</a>
+                                          <p class="subtitle is-6">${author}</p>
+                                        </div>
+                                       </div>
+                                        <div class="content is-italic">
+                                            <p>${sentence}</p>
+                                        </div>
+                                        <div class="content">
+                                            <p>${memo}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>`;
+                $("#novel-box").append(tempHtml);
+            }
         </script>
+        <style>
+            .center {
+                text-align: center;
+            }
+
+            .review-list {
+                width: 1090px;
+                margin: 20px auto auto auto;
+            }
+
+            .review-title {
+                display: inline-block;
+            }
+
+            .review-title:hover {
+                text-decoration: underline;
+            }
+
+            .card {
+                height: 400px;
+                margin-left: 15px;
+                margin-bottom: 15px;
+            }
+
+        </style>
 
     </head>
     <body>
-        <h1>규원의 서재</h1>
-        <p>안녕하세요. 규원의 서재입니다!</p>
+        <section class="hero is-medium is-primary is-bold">
+            <div class="hero-body">
+                <div class="container center">
+                    <h1 class="title">
+                        규원의 서재
+                    </h1>
+                    <h2 class="subtitle">
+                        안녕하세요. 규원의 서재입니다!
+                    </h2>
+                </div>
+            </div>
+        </section>
+        <div class="columns is-multiline is-mobile review-list" id="novel-box">
+            <div class="column is-one-third">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <a href="#" class="review-title title is-4">스푸트니크의 연인</a>
+                                <p class="subtitle is-6">무라카미 하루키</p>
+                            </div>
+                        </div>
+
+                        <div class="content is-italic">
+                            <p>나는 침대에서 나와 볕에 바랜 낡은 커튼을 제치고 창문을 연다. 얼굴을 내밀고 어두운 하늘을 올려다본다. 그곳에는 분명히 곰팡이가 슨 것 같은 칙칙한 색깔의
+                                반달이
+                                있다.
+                                이것으로 충분하다. 우리는 같은 기계의 같은 달을 보고 있다. 우리는 분명히 하나의 선으로 현실과 연결되어 있다. 나는 그것을 조용히 끌어 모으면 되는
+                                것이다. </p>
+                        </div>
+                        <div class="content">
+                            <p>하루키의 여자 주인공이 궁금하다면?</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
