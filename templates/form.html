@@ -41,6 +41,19 @@
                 let memo = $('#memo').val();
 
                 // 2. 제목, 저자, 리뷰 중 하나라도 입력하지 않았을 경우 alert를 띄웁니다. -> 나중에
+                if (title == "") {
+                    alert("제목을 입력해주세요");
+                    $("#title").focus();
+                    return;
+                } else if (author == "") {
+                    alert("저자를 입력해주세요");
+                    $("#author").focus();
+                    return;
+                } else if (memo == "") {
+                    alert("메모를 남겨주세요");
+                    $("#memo").focus();
+                    return;
+                }
 
                 // 3. POST /review 에 저장을 요청합니다.
                 $.ajax({
@@ -58,11 +71,26 @@
                     success: function (response) {
                         if (response["result"] == "success") {
                             alert(response["msg"]);
-                            window.location.reload();
+                            location.href = "/myshelf";
                         }
                     }
                 })
             }
+
+
+            function selectTypeChanged() {
+                let type = $('#type').val();
+                if (type == '소설책' || type == '실용서적') {
+                    $('#url-field').hide();
+                } else {
+                    $('#url-field').show();
+                }
+            }
+
+            $(document).ready(function () {
+                $('#url-field').hide();
+            });
+
         </script>
 
         <style type="text/css">
@@ -79,6 +107,7 @@
                 margin-top: 50px;
                 margin-bottom: 20px;
             }
+
 
         </style>
     </head>
@@ -115,7 +144,7 @@
                     <label class="label">구분</label>
                     <div class="control">
                         <div class="select is-success">
-                            <select id="type">
+                            <select id="type" onchange="selectTypeChanged()">
                                 <option>소설책</option>
                                 <option>실용서적</option>
                                 <option>기사</option>
@@ -138,7 +167,7 @@
                     </div>
                 </div>
 
-                <div class="field">
+                <div class="field" id="url-field">
                     <label class="label">URL</label>
                     <div class="control">
                         <input class="input is-success" type="text" id="url" placeholder="기사라면 URL을 작성해주세요">
@@ -161,16 +190,10 @@
                     </div>
                 </div>
 
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button onclick="saveReview()" class="button is-success is-rounded is-focused">내 서가에 책
-                            꽂기
-                        </button>
-                    </div>
-                    <div class="control">
-                        <button onclick = "location.href = '/myShelf'" class="button is-light is-rounded is-focused">내 서가 보러 가기
-                        </button>
-                    </div>
+                <div class="control">
+                    <button onclick="saveReview();" class="button is-success is-rounded is-focused">내 서가에 책
+                        꽂기
+                    </button>
                 </div>
             </div>
         </div>
