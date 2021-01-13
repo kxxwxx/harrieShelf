@@ -112,14 +112,18 @@
             <div class="hero-body">
                 <div class="container center">
                     <h1 class="title">
-                        규원의 서재
+                        {{ user }}의 서재
                     </h1>
                     <h2 class="subtitle">
-                        안녕하세요. 규원의 서재입니다!
+                        안녕하세요. {{ user }}의 서재입니다!
                     </h2>
                 </div>
             </div>
         </section>
+        <div class="control">
+            <button onClick="location.href='/write?user={{ user }}';" class="button is-success is-rounded is-focused">작성하러 가기
+            </button>
+        </div>
         <div class="columns is-multiline is-mobile review-list" id="novel-box">
             <div class="column is-one-third">
                 <div class="card">

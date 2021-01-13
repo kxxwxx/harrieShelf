@@ -32,7 +32,7 @@
             function saveReview() {
 
                 // 1. 제목, 저자, 리뷰 내용을 가져옵니다.
-                let user = $('#user').val();
+                let user = '{{ user }}';
                 let type = $('#type').val();
                 let title = $('#title').val();
                 let author = $('#author').val();
@@ -60,7 +60,7 @@
                     type: "POST",
                     url: "/write",
                     data: {
-                        user: user,
+                        user: {{ user }},
                         type: type,
                         title: title,
                         author: author,
@@ -128,76 +128,70 @@
                     <label class="label">작성자</label>
                     <div class="control">
                         <div class="select is-success">
-                            <select id="user">
-                                <option>규원</option>
-                                <option>리아</option>
-                                <option>재은</option>
-                                <option>배지</option>
-                                <option>김지</option>
-                                <option>이안</option>
+                            <select id="type" id="user" value="{{ user }}">
+                                <option>{{ user }}</option>
                             </select>
                         </div>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label class="label">구분</label>
-                    <div class="control">
-                        <div class="select is-success">
-                            <select id="type" onchange="selectTypeChanged()">
-                                <option>소설책</option>
-                                <option>실용서적</option>
-                                <option>기사</option>
-                            </select>
+                    <div class="field">
+                        <label class="label">구분</label>
+                        <div class="control">
+                            <div class="select is-success">
+                                <select id="type" onchange="selectTypeChanged()">
+                                    <option>소설책</option>
+                                    <option>실용서적</option>
+                                    <option>기사</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label class="label">제목</label>
-                    <div class="control">
-                        <input class="input is-success" type="text" id="title" placeholder="책 제목을 입력해주세요">
+                    <div class="field">
+                        <label class="label">제목</label>
+                        <div class="control">
+                            <input class="input is-success" type="text" id="title" placeholder="책 제목을 입력해주세요">
+                        </div>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label class="label">저자</label>
-                    <div class="control">
-                        <input class="input is-success" type="text" id="author" placeholder="저자를 입력해주세요">
+                    <div class="field">
+                        <label class="label">저자</label>
+                        <div class="control">
+                            <input class="input is-success" type="text" id="author" placeholder="저자를 입력해주세요">
+                        </div>
                     </div>
-                </div>
 
-                <div class="field" id="url-field">
-                    <label class="label">URL</label>
-                    <div class="control">
-                        <input class="input is-success" type="text" id="url" placeholder="기사라면 URL을 작성해주세요">
+                    <div class="field" id="url-field">
+                        <label class="label">URL</label>
+                        <div class="control">
+                            <input class="input is-success" type="text" id="url" placeholder="기사라면 URL을 작성해주세요">
+                        </div>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label class="label">마음에 닿은 문장</label>
-                    <div class="control">
+                    <div class="field">
+                        <label class="label">마음에 닿은 문장</label>
+                        <div class="control">
                         <textarea class="textarea is-success" id="sentence"
                                   placeholder="어떤 내용이 마음에 와닿았나요? 오래 기억하고 싶은 문장을 기록해주세요."></textarea>
+                        </div>
                     </div>
-                </div>
 
-                <div class="field">
-                    <label class="label">함께 기억하고 싶은 메모</label>
-                    <div class="control">
+                    <div class="field">
+                        <label class="label">함께 기억하고 싶은 메모</label>
+                        <div class="control">
                         <textarea class="textarea is-success" id="memo"
                                   placeholder="해리언과 공유하고 싶은 이유가 있나요? 메모를 남겨주세요."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="control">
+                        <button onclick="saveReview();" class="button is-success is-rounded is-focused">내 서가에 책
+                            꽂기
+                        </button>
                     </div>
                 </div>
-
-                <div class="control">
-                    <button onclick="saveReview();" class="button is-success is-rounded is-focused">내 서가에 책
-                        꽂기
-                    </button>
-                </div>
             </div>
-        </div>
-        <br>
+            <br>
     </body>
 
 </html>

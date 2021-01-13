@@ -8,9 +8,14 @@ db = client.harrie
 
 
 @app.route('/')
-def get_form_page():
-    return render_template('form.html')
+def get_profile_page():
+    return render_template('profile.html')
 
+
+@app.route('/write')
+def get_form_page():
+    user = request.args.get('user')
+    return render_template('form.html', user=user)
 
 @app.route('/write', methods=['POST'])
 def write_review():
@@ -42,12 +47,8 @@ def write_review():
 
 @app.route('/myshelf')
 def get_myshelf_page():
-    return render_template('myShelf.html')
-
-@app.route('/profile')
-def get_profile_page():
-    return render_template('profile.html')
-
+    user = request.args.get('user')
+    return render_template('myShelf.html', user=user)
 
 @app.route('/write', methods=['GET'])
 def read_reviews():
