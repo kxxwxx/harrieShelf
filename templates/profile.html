@@ -6,11 +6,12 @@
 
         <!-- Required meta tags -->
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="/static/images/favicon.png">
 
         <!-- Bulma CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+        <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
 
         <!-- JS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -51,7 +52,7 @@
                 width: 200px;
                 height: 200px;
 
-                background-image: url("https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/xmas/Webp.net-gifmaker+(2).gif");
+                background-image: url("{{ url_for('static', filename='kyu_profile.jpg') }}");
                 background-size: cover;
 
                 border-radius: 100px;
@@ -65,7 +66,7 @@
                 width: 200px;
                 height: 200px;
 
-                background-image: url("https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/xmas/Webp.net-gifmaker+(2).gif");
+                background-image: url("{{ url_for('static', filename='lia_profile.jpg') }}");
                 background-size: cover;
 
                 border-radius: 100px;
@@ -79,7 +80,49 @@
                 width: 200px;
                 height: 200px;
 
-                background-image: url("https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/xmas/Webp.net-gifmaker+(2).gif");
+                background-image: url("{{ url_for('static', filename='jaeni_profile.jpg') }}");
+                background-size: cover;
+
+                border-radius: 100px;
+                border: 1px solid lightgray;
+                box-shadow: 0px 0px 10px 0px white;
+            }
+
+            .profile-image-four {
+                background-color: blue;
+
+                width: 200px;
+                height: 200px;
+
+                background-image: url("{{ url_for('static', filename='baeji_profile.jpg') }}");
+                background-size: cover;
+
+                border-radius: 100px;
+                border: 1px solid lightgray;
+                box-shadow: 0px 0px 10px 0px white;
+            }
+
+            .profile-image-five {
+                background-color: blue;
+
+                width: 200px;
+                height: 200px;
+
+                background-image: url("{{ url_for('static', filename='kimji_profile.jpg') }}");
+                background-size: cover;
+
+                border-radius: 100px;
+                border: 1px solid lightgray;
+                box-shadow: 0px 0px 10px 0px white;
+            }
+
+            .profile-image-six {
+                background-color: blue;
+
+                width: 200px;
+                height: 200px;
+
+                background-image: url("{{ url_for('static', filename='ian_profile.jpg') }}");
                 background-size: cover;
 
                 border-radius: 100px;
@@ -91,7 +134,7 @@
 
     </head>
     <body>
-        <section class="hero is-medium is-primary is-bold">
+        <section class="hero is-medium is-light is-bold">
             <div class="hero-body">
                 <div class="container center">
                     <h1 class="title">
@@ -107,27 +150,27 @@
         <div class="columns is-mobile is-centered profile-box">
             <div class="column">
                 <div class="profile-image-one"></div>
-                <a class="link is-info" href="/myshelf?user=규원">규원</a>
+                <a class="link is-info" href="/home?user=규원">규원</a>
             </div>
             <div class="column">
                 <div class="profile-image-two"></div>
-                <a class="link is-info" href="/myshelf?user=리아">리아</a>
+                <a class="link is-info" href="/home?user=리아">리아</a>
             </div>
             <div class="column">
                 <div class="profile-image-three"></div>
-                <a class="link is-info" href="/myshelf?user=재니">재니</a>
+                <a class="link is-info" href="/home?user=재니">재니</a>
             </div>
             <div class="column">
-                <div class="profile-image-one"></div>
-                <a class="link is-info" href="/myshelf?user=배지">배지</a>
+                <div class="profile-image-four"></div>
+                <a class="link is-info" href="/home?user=배지">배지</a>
             </div>
             <div class="column">
-                <div class="profile-image-two"></div>
-                <a class="link is-info" href="/myshelf?user=김지">김지</a>
+                <div class="profile-image-five"></div>
+                <a class="link is-info" href="/home?user=김지">김지</a>
             </div>
             <div class="column">
-                <div class="profile-image-three"></div>
-                <a class="link is-info" href="/myshelf?user=이안">이안</a>
+                <div class="profile-image-six"></div>
+                <a class="link is-info" href="/home?user=이안">이안</a>
             </div>
         </div>
 

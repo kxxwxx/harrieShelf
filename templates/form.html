@@ -7,11 +7,12 @@
 
         <!-- Required meta tags -->
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="/static/images/favicon.png">
 
         <!-- Bulma CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+        <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
 
         <!-- JS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -32,7 +33,7 @@
             function saveReview() {
 
                 // 1. 제목, 저자, 리뷰 내용을 가져옵니다.
-                let user = '{{ user }}';
+                let user = $('#user').val();
                 let type = $('#type').val();
                 let title = $('#title').val();
                 let author = $('#author').val();
@@ -58,9 +59,9 @@
                 // 3. POST /review 에 저장을 요청합니다.
                 $.ajax({
                     type: "POST",
-                    url: "/write",
+                    url: "/reviews",
                     data: {
-                        user: {{ user }},
+                        user: user,
                         type: type,
                         title: title,
                         author: author,
@@ -71,7 +72,7 @@
                     success: function (response) {
                         if (response["result"] == "success") {
                             alert(response["msg"]);
-                            location.href = "/myshelf";
+                            location.href = "/myshelf?user={{ user }}";
                         }
                     }
                 })
@@ -113,6 +114,73 @@
     </head>
 
     <body>
+
+        <nav id="navbar" class="bd-navbar navbar has-shadow is-spaced">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/home?user={{ user }}">HARRIE SHELF</a>
+                    {#                        <img src="#" alt="#" width="112" height="28">#}
+                    <div id="navbarBurger" class="navbar-burger" data-target="navMenuDocumentation">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="navbar-menu">
+                    <div class="navbar-start">
+
+                    </div>
+                    <div class="navbar-end">
+                        <a class="navbar-item" href="/myshelf?user={{ user }}">
+                            <span class="icon">
+                                <i class="fas fa-heart"></i>
+                              </span>
+                            <span>내 서재 입장하기</span>
+                        </a>
+
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link" href="#">
+                                <span class="icon">
+                                <i class="fas fa-book"></i>
+                                </span>
+                                <span>해리언 서재 둘러보기</span>
+                            </a>
+                            <div id="moreDropdown" class="navbar-dropdown">
+                                <a class="navbar-item" href="/myshelf?user=규원">
+                                    규원
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=리아">
+                                    리아
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=재니">
+                                    재니
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=배지">
+                                    배지
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=김지">
+                                    김지
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=이안">
+                                    이안
+                                </a>
+                            </div>
+                        </div>
+                        <p class="control">
+                            <a class="button is-link is-light"
+                               href="write?user={{ user }}">
+                                <span class="icon">
+                                <i class="fas fa-pen"></i>
+                                </span>
+                                <strong>좋은 글 나누기</strong>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
         <div class="form">
             <!--            <img src="https://image.freepik.com/free-vector/large-bookcase-with-books-library-book-shelf-interior_92863-357.jpg"-->
             <!--                 class="img-fluid" alt="Responsive image">-->
@@ -128,7 +196,7 @@
                     <label class="label">작성자</label>
                     <div class="control">
                         <div class="select is-success">
-                            <select id="type" id="user" value="{{ user }}">
+                            <select id="user" value="{{ user }}">
                                 <option>{{ user }}</option>
                             </select>
                         </div>

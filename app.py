@@ -11,13 +11,22 @@ db = client.harrie
 def get_profile_page():
     return render_template('profile.html')
 
-
 @app.route('/write')
 def get_form_page():
     user = request.args.get('user')
     return render_template('form.html', user=user)
 
-@app.route('/write', methods=['POST'])
+@app.route('/home')
+def get_main_page():
+    user = request.args.get('user')
+    return render_template('harrieShelf.html', user=user)
+
+@app.route('/myshelf')
+def get_myshelf_page():
+    user = request.args.get('user')
+    return render_template('myShelf.html', user=user)
+
+@app.route('/reviews', methods=['POST'])
 def write_review():
     # 1. 클라이언트가 준 user, type, title, author, url, sentence, memo 가져오기.
     user = request.form['user']
@@ -44,19 +53,13 @@ def write_review():
     # 3. 성공 여부 & 성공 메시지 반환하기
     return jsonify({'result': 'success', 'msg': '기록해주셔서 감사합니다!'})
 
-
-@app.route('/myshelf')
-def get_myshelf_page():
-    user = request.args.get('user')
-    return render_template('myShelf.html', user=user)
-
-@app.route('/write', methods=['GET'])
+@app.route('/reviews', methods=['GET'])
 def read_reviews():
     # 1. DB에서 리뷰 정보 모두 가져오기
-    reviews = list(db.reviews.find({}, {'_id': 0}))
+    user = request.args.get('user')
+    reviews = list(db.reviews.find({'user': user}, {'_id': 0}))
     # 2. 성공 여부 & 리뷰 목록 반환하기
     return jsonify({'result': 'success', 'reviews': reviews})
-
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

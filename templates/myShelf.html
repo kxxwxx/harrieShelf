@@ -6,12 +6,12 @@
 
         <!-- Required meta tags -->
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="/static/images/favicon.png">
 
         <!-- Bulma CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
-        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
 
         <!-- JS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -40,7 +40,7 @@
                 // 1. 리뷰 목록을 서버에 요청하기
                 $.ajax({
                     type: "GET",
-                    url: "/write",
+                    url: "/reviews?user={{ user }}",
                     data: {},
                     success: function (response) {
                         // 2. 요청 성공 여부 확인하기
@@ -108,7 +108,74 @@
 
     </head>
     <body>
-        <section class="hero is-medium is-primary is-bold">
+
+        <nav id="navbar" class="bd-navbar navbar has-shadow is-spaced">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/home?user={{ user }}">HARRIE SHELF</a>
+                    {#                        <img src="#" alt="#" width="112" height="28">#}
+                    <div id="navbarBurger" class="navbar-burger" data-target="navMenuDocumentation">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="navbar-menu">
+                    <div class="navbar-start">
+
+                    </div>
+                    <div class="navbar-end">
+                        <a class="navbar-item" href="/myshelf?user={{ user }}">
+                            <span class="icon">
+                                <i class="fas fa-heart"></i>
+                              </span>
+                            <span>내 서재 입장하기</span>
+                        </a>
+
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link" href="#">
+                                <span class="icon">
+                                <i class="fas fa-book"></i>
+                                </span>
+                                <span>해리언 서재 둘러보기</span>
+                            </a>
+                            <div id="moreDropdown" class="navbar-dropdown">
+                                <a class="navbar-item" href="/myshelf?user=규원">
+                                    규원
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=리아">
+                                    리아
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=재니">
+                                    재니
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=배지">
+                                    배지
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=김지">
+                                    김지
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=이안">
+                                    이안
+                                </a>
+                            </div>
+                        </div>
+                        <p class="control">
+                            <a class="button is-link is-light"
+                               href="write?user={{ user }}">
+                                <span class="icon">
+                                <i class="fas fa-pen"></i>
+                                </span>
+                                <strong>좋은 글 나누기</strong>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero is-medium is-bold">
             <div class="hero-body">
                 <div class="container center">
                     <h1 class="title">
@@ -120,10 +187,11 @@
                 </div>
             </div>
         </section>
-        <div class="control">
-            <button onClick="location.href='/write?user={{ user }}';" class="button is-success is-rounded is-focused">작성하러 가기
-            </button>
-        </div>
+{#        <div class="control">#}
+{#            <button onClick="location.href='/write?user={{ user }}';" class="button is-success is-rounded is-focused">#}
+{#                작성하러 가기#}
+{#            </button>#}
+{#        </div>#}
         <div class="columns is-multiline is-mobile review-list" id="novel-box">
             <div class="column is-one-third">
                 <div class="card">
