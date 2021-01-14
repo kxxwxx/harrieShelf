@@ -30,7 +30,7 @@
         <script type="text/javascript">
 
             $(document).ready(function () {
-                $("#reviews-box").html("");
+                $("#novel-box").html("");
                 showReview();
             });
 
@@ -126,7 +126,7 @@
 
                     </div>
                     <div class="navbar-end">
-                        <a class="navbar-item" href="/myshelf?login_user={{ login_user }}">
+                        <a class="navbar-item" href="/myshelf?user={{ login_user }}&login_user={{ login_user }}">
                             <span class="icon">
                                 <i class="fas fa-heart"></i>
                               </span>
@@ -162,8 +162,7 @@
                             </div>
                         </div>
                         <p class="control">
-                            <a class="button is-link is-light"
-                               href="/write?login_user={{ login_user }}">
+                            <a class="button is-link is-light" href="/write?login_user={{ login_user }}">
                                 <span class="icon">
                                 <i class="fas fa-pen"></i>
                                 </span>

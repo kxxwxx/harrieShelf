@@ -15,13 +15,13 @@ def get_profile_page():
 def get_form_page():
     login_user = request.args.get('login_user')
     user = login_user
-    return render_template('form.html', user=user)
+    return render_template('form.html', user=user, login_user=login_user)
 
 @app.route('/home')
 def get_main_page():
     login_user = request.args.get('login_user')
     user = login_user
-    return render_template('harrieShelf.html', user=user)
+    return render_template('harrieShelf.html', user=user, login_user=login_user)
 
 @app.route('/myshelf')
 def get_myshelf_page():

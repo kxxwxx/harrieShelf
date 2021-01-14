@@ -27,7 +27,55 @@
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;500;700&display=swap"
               rel="stylesheet">
 
-        <script>
+        <script type="text/javascript">
+
+            {#$(document).ready(function () {#}
+            {#    $("#article-box").html("");#}
+            {#    showReview();#}
+            {#});#}
+            {##}
+            {#function showReview() {#}
+            {#    $.ajax({#}
+            {#        type: "GET",#}
+            {#        url: "/reviews",#}
+            {#        data: {},#}
+            {#        success: function (response) {#}
+            {#            // 2. 요청 성공 여부 확인하기#}
+            {#            if (response["result"] == "success") {#}
+            {#                let reviews = response["reviews"];#}
+            {#                for (let i = 0; i < reviews.length; i++) {#}
+            {#                    makeCard(reviews[i]["title"], reviews[i]["user"], reviews[i]["url"], reviews[i]["memo"]);#}
+            {#                }#}
+            {#            } else {#}
+            {#                alert("리뷰를 받아오지 못했습니다");#}
+            {#            }#}
+            {#        }#}
+            {#    })#}
+            {#}#}
+            {##}
+            {##}
+            {#function makeCard(title, user, url, memo) {#}
+            {#    let tempHtml = `<div class="column is-one-quarter">#}
+            {#                <div class="card">#}
+            {#                    <div class="card-image">#}
+            {#                        <figure class="image is-4by3">#}
+            {#                            <img src="${url}">#}
+            {#                        </figure>#}
+            {#                    </div>#}
+            {#                    <div class="card-content">#}
+            {#                        <div class="media">#}
+            {#                            <div class="media-content">#}
+            {#                                <a href="${url}" class="review-title title is-5">${title}</a>#}
+            {#                                <p class="subtitle is-6"> updated by ${user} </p>#}
+            {#                            </div>#}
+            {#                        </div>#}
+            {#                        <div class="content">#}
+            {#                            <p>${memo}</p>#}
+            {#                        </div>#}
+            {#                    </div>#}
+            {#                </div>`;#}
+            {#    $("#article-box").append(tempHtml);#}
+            {#}#}
 
         </script>
 
@@ -40,6 +88,14 @@
             .widget {
                 margin-top: 50px;
                 margin-bottom: 50px;
+            }
+
+            .review-title {
+                display: inline-block;
+            }
+
+            .review-title:hover {
+                text-decoration: underline;
             }
 
         </style>
@@ -99,7 +155,7 @@
                             </div>
                         </div>
                         <p class="control">
-                            <a class="button is-link is-light" href="/write?login_user={{ user }}">
+                            <a class="button is-link is-light" href="/write?login_user={{ login_user }}">
                                 <span class="icon">
                                 <i class="fas fa-pen"></i>
                                 </span>
@@ -137,18 +193,44 @@
                     <h5 class="subtitle is-5">해리언들이 가장 뜨거운 반응을 보여준 Top 7</h5>
                 </div>
 
+                <div class="article-list widget">
+                    <div>
+                        <h4 class="title is-4">3분이면 충분해!<br>
+                            같이 읽고 떠들기 위한 기사
+                        </h4>
+                        <h5 class="subtitle is-5">함께 읽으면 좋을 온라인 기사</h5>
+                    </div>
+                    <br>
+                    <div class="columns is-multiline is-mobile" id="article-box">
+                        <div class="column is-one-quarter">
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-4by3">
+                                        <img src="https://bulma.io/images/placeholders/1280x960.png"
+                                             alt="Placeholder image">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <div class="media">
+                                        <div class="media-content">
+                                            <a href="#" class="review-title title is-5">기사 제목</a>
+                                            <p class="subtitle is-6">Updated by {{ login_user }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <p>다들 시간 날 때 읽어봐!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="nonfiction-list widget">
                     <h4 class="title is-4">‘일잘러’가 되기 위한 여정<br>
                         WORK & LIFE에 도움되는 실용서
                     </h4>
                     <h5 class="subtitle is-5">해리언이 읽은 실용서적</h5>
-                </div>
-
-                <div class="article-list widget">
-                    <h4 class="title is-4">3분이면 충분해!<br>
-                        같이 읽고 떠들기 위한 기사
-                    </h4>
-                    <h5 class="subtitle is-5">함께 읽으면 좋을 온라인 기사</h5>
                 </div>
 
 
