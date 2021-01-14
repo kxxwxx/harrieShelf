@@ -49,7 +49,7 @@
         <nav id="navbar" class="bd-navbar navbar has-shadow is-spaced">
             <div class="container">
                 <div class="navbar-brand">
-                    <a class="navbar-item" href="/home?user={{ user }}">HARRIE SHELF</a>
+                    <a class="navbar-item" href="/home?login_user={{ login_user }}">HARRIE SHELF</a>
                     {#                        <img src="#" alt="#" width="112" height="28">#}
                     <div id="navbarBurger" class="navbar-burger" data-target="navMenuDocumentation">
                         <span></span>
@@ -63,7 +63,7 @@
 
                     </div>
                     <div class="navbar-end">
-                        <a class="navbar-item" href="/myshelf?user={{ user }}">
+                        <a class="navbar-item" href="/myshelf?user={{ user }}&login_user={{ login_user }}">
                             <span class="icon">
                                 <i class="fas fa-heart"></i>
                               </span>
@@ -78,28 +78,28 @@
                                 <span>해리언 서재 둘러보기</span>
                             </a>
                             <div id="moreDropdown" class="navbar-dropdown">
-                                <a class="navbar-item" href="/myshelf?user=규원">
+                                <a class="navbar-item" href="/myshelf?user=규원&login_user={{ login_user }}">
                                     규원
                                 </a>
-                                <a class="navbar-item" href="/myshelf?user=리아">
+                                <a class="navbar-item" href="/myshelf?user=리아&login_user={{ login_user }}">
                                     리아
                                 </a>
-                                <a class="navbar-item" href="/myshelf?user=재니">
+                                <a class="navbar-item" href="/myshelf?user=재니&login_user={{ login_user }}">
                                     재니
                                 </a>
-                                <a class="navbar-item" href="/myshelf?user=배지">
+                                <a class="navbar-item" href="/myshelf?user=배지&login_user={{ login_user }}">
                                     배지
                                 </a>
-                                <a class="navbar-item" href="/myshelf?user=김지">
+                                <a class="navbar-item" href="/myshelf?user=김지&login_user={{ login_user }}">
                                     김지
                                 </a>
-                                <a class="navbar-item" href="/myshelf?user=이안">
+                                <a class="navbar-item" href="/myshelf?user=이안&login_user={{ login_user }}">
                                     이안
                                 </a>
                             </div>
                         </div>
                         <p class="control">
-                            <a class="button is-link is-light" href="write?user={{ user }}">
+                            <a class="button is-link is-light" href="/write?login_user={{ user }}">
                                 <span class="icon">
                                 <i class="fas fa-pen"></i>
                                 </span>

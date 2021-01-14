@@ -13,18 +13,21 @@ def get_profile_page():
 
 @app.route('/write')
 def get_form_page():
-    user = request.args.get('user')
+    login_user = request.args.get('login_user')
+    user = login_user
     return render_template('form.html', user=user)
 
 @app.route('/home')
 def get_main_page():
-    user = request.args.get('user')
+    login_user = request.args.get('login_user')
+    user = login_user
     return render_template('harrieShelf.html', user=user)
 
 @app.route('/myshelf')
 def get_myshelf_page():
+    login_user = request.args.get('login_user')
     user = request.args.get('user')
-    return render_template('myShelf.html', user=user)
+    return render_template('myShelf.html', user=user, login_user=login_user)
 
 @app.route('/reviews', methods=['POST'])
 def write_review():
