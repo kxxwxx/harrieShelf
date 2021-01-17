@@ -38,8 +38,10 @@
                 let title = $('#title').val();
                 let author = $('#author').val();
                 let url = $('#url').val();
-                let sentence = $('#sentence').val();
                 let memo = $('#memo').val();
+                let like = 0;
+                let learn = 0;
+                let angry = 0;
 
                 // 2. 제목, 저자, 리뷰 중 하나라도 입력하지 않았을 경우 alert를 띄웁니다. -> 나중에
                 if (title == "") {
@@ -66,8 +68,10 @@
                         title: title,
                         author: author,
                         url: url,
-                        sentence: sentence,
-                        memo: memo
+                        memo: memo,
+                        like: like,
+                        learn: learn,
+                        angry: angry
                     },
                     success: function (response) {
                         if (response["result"] == "success") {
@@ -95,25 +99,26 @@
         </script>
 
         <style type="text/css">
-            * {
-                font-family: 'Noto Sans KR', sans-serif;
+
+            .center {
+                text-align: center;
             }
 
-            .form {
-                width: 600px;
+            .doc {
+                width: 700px;
                 margin: auto;
             }
 
-            .intro {
-                margin-top: 50px;
-                margin-bottom: 20px;
+
+            .question-box {
+                padding-bottom: 5px;
             }
 
 
         </style>
     </head>
 
-    <body>
+    <div>
 
         <nav id="navbar" class="bd-navbar navbar has-shadow is-spaced">
             <div class="container">
@@ -180,85 +185,81 @@
             </div>
         </nav>
 
-        <div class="form">
-            <!--            <img src="https://image.freepik.com/free-vector/large-bookcase-with-books-library-book-shelf-interior_92863-357.jpg"-->
-            <!--                 class="img-fluid" alt="Responsive image">-->
-            <div class="intro">
-                <h1 class="title">어떤 책을 읽으셨어요?📚 </h1>
-                <p>해리언을 위해 읽은 책, 기사에 대한 내용을 남겨주세요.
-                    <br> 기록한 내용은 개인 서가에 꽂히게 됩니다.</p>
+        <section class="hero is-medium is-bold">
+            <div class="hero-body">
+                <div class="container center">
+                    <h1 class="title">
+                        어떤 책을 읽으셨어요?
+                    </h1>
+                    <h2 class="subtitle">
+                        해리언을 위해 읽은 책, 기사에 대한 내용을 남겨주세요<br>
+                        {{ user }}님의 서가에 꽂히게 됩니다.
+                    </h2>
+                </div>
             </div>
+        </section>
 
-            <div>
-
-                <div class="field">
-                    <label class="label">작성자</label>
-                    <div class="control">
-                        <div class="select is-success">
-                            <select id="user" value="{{ user }}">
-                                <option>{{ user }}</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label">구분</label>
-                        <div class="control">
-                            <div class="select is-success">
-                                <select id="type" onchange="selectTypeChanged()">
-                                    <option>소설책</option>
-                                    <option>실용서적</option>
-                                    <option>기사</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label">제목</label>
-                        <div class="control">
-                            <input class="input is-success" type="text" id="title" placeholder="책 제목을 입력해주세요">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label">저자</label>
-                        <div class="control">
-                            <input class="input is-success" type="text" id="author" placeholder="저자를 입력해주세요">
-                        </div>
-                    </div>
-
-                    <div class="field" id="url-field">
-                        <label class="label">URL</label>
-                        <div class="control">
-                            <input class="input is-success" type="text" id="url" placeholder="기사라면 URL을 작성해주세요">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label">마음에 닿은 문장</label>
-                        <div class="control">
-                        <textarea class="textarea is-success" id="sentence"
-                                  placeholder="어떤 내용이 마음에 와닿았나요? 오래 기억하고 싶은 문장을 기록해주세요."></textarea>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label">함께 기억하고 싶은 메모</label>
-                        <div class="control">
-                        <textarea class="textarea is-success" id="memo"
-                                  placeholder="해리언과 공유하고 싶은 이유가 있나요? 메모를 남겨주세요."></textarea>
-                        </div>
-                    </div>
-
-                    <div class="control">
-                        <button onclick="saveReview();" class="button is-success is-rounded is-focused">내 서가에 책
-                            꽂기
-                        </button>
+        <div class="doc">
+            <div class="field question-box">
+                <label class="label">Librarian</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="user">
+                            <option>{{ user }}</option>
+                        </select>
                     </div>
                 </div>
             </div>
-            <br>
-    </body>
+
+            <div class="field question-box">
+                <label class="label">TYPE</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="type" onchange="selectTypeChanged()">
+                            <option>소설책</option>
+                            <option>실용서적</option>
+                            <option>기사</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field question-box">
+                <label class="label">TITLE</label>
+                <div class="control">
+                    <input class="input" type="text" id="title" placeholder="공유하고자 하는 글의 제목을 적어주세요.">
+                </div>
+            </div>
+
+            <div class="field question-box">
+                <label class="label">AUTHOR</label>
+                <div class="control">
+                    <input class="input" type="text" id="author" placeholder="저자를 입력해주세요.">
+                </div>
+            </div>
+
+            <div class="field question-box" id="url-field">
+                <label class="label">URL</label>
+                <div class="control">
+                    <input class="input" type="text" id="url" placeholder="모두가 쉽게 기사를 읽을 수 있도록 URL을 공유해주세요.">
+                </div>
+            </div>
+
+            <div class="field question-box">
+                <label class="label">MEMO</label>
+                <div class="control">
+                        <textarea class="textarea" id="memo"
+                                  placeholder="해리언에게 전하고 싶은 메모를 남겨주세요. 140자까지 입력할 수 있습니다." maxlength="140"></textarea>
+                </div>
+            </div>
+
+            <div class="control">
+                <button onclick="saveReview();" class="button is-success is-rounded is-focused">내 서가에 책
+                    꽂기
+                </button>
+            </div>
+        </div>
+        <br>
+        </body>
 
 </html>

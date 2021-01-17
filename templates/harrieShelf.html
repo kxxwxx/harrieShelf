@@ -4,7 +4,7 @@
         <!-- Webpage Title -->
         <title>해리의 서재 | HARRIE SHELF</title>
 
-        <!-- Required meta tags -->
+       <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="/static/images/favicon.png">
@@ -29,60 +29,59 @@
 
         <script type="text/javascript">
 
-            {#$(document).ready(function () {#}
-            {#    $("#article-box").html("");#}
-            {#    showReview();#}
-            {#});#}
-            {##}
-            {#function showReview() {#}
-            {#    $.ajax({#}
-            {#        type: "GET",#}
-            {#        url: "/reviews",#}
-            {#        data: {},#}
-            {#        success: function (response) {#}
-            {#            // 2. 요청 성공 여부 확인하기#}
-            {#            if (response["result"] == "success") {#}
-            {#                let reviews = response["reviews"];#}
-            {#                for (let i = 0; i < reviews.length; i++) {#}
-            {#                    makeCard(reviews[i]["title"], reviews[i]["user"], reviews[i]["url"], reviews[i]["memo"]);#}
-            {#                }#}
-            {#            } else {#}
-            {#                alert("리뷰를 받아오지 못했습니다");#}
-            {#            }#}
-            {#        }#}
-            {#    })#}
-            {#}#}
-            {##}
-            {##}
-            {#function makeCard(title, user, url, memo) {#}
-            {#    let tempHtml = `<div class="column is-one-quarter">#}
-            {#                <div class="card">#}
-            {#                    <div class="card-image">#}
-            {#                        <figure class="image is-4by3">#}
-            {#                            <img src="${url}">#}
-            {#                        </figure>#}
-            {#                    </div>#}
-            {#                    <div class="card-content">#}
-            {#                        <div class="media">#}
-            {#                            <div class="media-content">#}
-            {#                                <a href="${url}" class="review-title title is-5">${title}</a>#}
-            {#                                <p class="subtitle is-6"> updated by ${user} </p>#}
-            {#                            </div>#}
-            {#                        </div>#}
-            {#                        <div class="content">#}
-            {#                            <p>${memo}</p>#}
-            {#                        </div>#}
-            {#                    </div>#}
-            {#                </div>`;#}
-            {#    $("#article-box").append(tempHtml);#}
-            {#}#}
+            $(document).ready(function () {
+                $("#article-box").html("");
+                showReviewsByTypes();
+            });
+
+            // Article Card
+
+            function showReviewsByTypes() {
+                $.ajax({
+                    type: "GET",
+                    url: "/types?type=기사",
+                    data: {},
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            let reviews = response["reviews"];
+                            for (let i = 0; i < reviews.length; i++) {
+                                makeArticleCard(reviews[i]["title"], reviews[i]["user"], reviews[i]["url"], reviews[i]["image"], reviews[i]["memo"]);
+                            }
+                        } else {
+                            alert("리뷰를 받아오지 못했습니다");
+                        }
+                    }
+                })
+            }
+
+            function makeArticleCard(title, user, url, image, memo) {
+                let tempHtml = `<div class="column is-one-quarter">
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-4by3">
+                                        <img src="${image}">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <div class="media">
+                                        <div class="media-content">
+                                            <a href="${url}" class="review-title title is-5">${title}</a>
+                                            <p class="subtitle is-6"> updated by ${user} </p>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <p>${memo}</p>
+                                    </div>
+                                </div>
+                            </div>`;
+                $("#article-box").append(tempHtml);
+            }
 
         </script>
 
         <style>
             .doc {
-                width: 1090px;
-                margin: auto;
+                padding-left: 9rem;
             }
 
             .widget {
@@ -173,7 +172,7 @@
                     <div class="hero-body">
                         <div class="container">
                             <h1 class="title">
-                                "{{ user }}님, 시간 날 때 읽어보세요😎"
+                                {{ user }}님, 시간 날 때 읽어보세요😎
                             </h1>
                             <h2 class="subtitle">
                                 HARRIE TELCO팀의 마음이 차곡차곡 쌓이는 해리 서재.<br>

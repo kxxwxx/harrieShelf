@@ -30,12 +30,12 @@
         <script type="text/javascript">
 
             $(document).ready(function () {
-                $("#novel-box").html("");
+                $("#review-box").html("");
                 showReview();
             });
 
             function showReview() {
-                $('#novel-box').empty()
+                $('#review-box').empty()
 
                 // 1. 리뷰 목록을 서버에 요청하기
                 $.ajax({
@@ -48,7 +48,7 @@
                             let reviews = response["reviews"];
                             // 3. 요청 성공했을 때 리뷰를 올바르게 화면에 나타내기
                             for (let i = 0; i < reviews.length; i++) {
-                                makeCard(reviews[i]["title"], reviews[i]["author"], reviews[i]["url"], reviews[i]["sentence"], reviews[i]["memo"]);
+                                makeCard(reviews[i]["title"], reviews[i]["author"], reviews[i]["url"], reviews[i]["memo"], reviews[i]["like"], reviews[i]["learn"], reviews[i]["angry"]);
                             }
                         } else {
                             alert("리뷰를 받아오지 못했습니다");
@@ -57,8 +57,7 @@
                 })
             }
 
-
-            function makeCard(title, author, url, sentence, memo) {
+            function makeCard(title, author, url, memo, like, learn, angry) {
                 let tempHtml = `<div class="column is-one-third">
                                     <div class="card">
                                     <div class="card-content">
@@ -68,17 +67,65 @@
                                           <p class="subtitle is-6">${author}</p>
                                         </div>
                                        </div>
-                                        <div class="content is-italic">
-                                            <p>${sentence}</p>
-                                        </div>
                                         <div class="content">
                                             <p>${memo}</p>
                                         </div>
+                                        <div class="content">
+                                        </div>
                                       </div>
+                                        <footer class="card-footer">
+<a href="#" onclick="likeBook('${title}')" class="card-footer-item has-text-info">🤣:${like}</a>
+<a href="#" onclick="learnBook('${title}')" class="card-footer-item has-text-info">🤓:${learn}</a>
+<a href="#" onclick="angryBook('${title}')" class="card-footer-item has-text-info">😡:${angry}</a>
+                                        </footer>
                                     </div>
                                 </div>`;
-                $("#novel-box").append(tempHtml);
+                $("#review-box").append(tempHtml);
             }
+
+            function likeBook(title) {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/like",
+                    data: {title: title},
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            alert('재밌어요 +1!')
+                            window.location.reload()
+                        }
+                    }
+                });
+            }
+
+            function learnBook(title) {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/learn",
+                    data: {title: title},
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            alert('유익해요 +1!')
+                            window.location.reload()
+                        }
+                    }
+                });
+            }
+
+            function angryBook(title) {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/angry",
+                    data: {title: title},
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            alert('화나요 +1!')
+                            window.location.reload()
+                        }
+                    }
+                });
+            }
+
+
         </script>
         <style>
             .center {
@@ -99,7 +146,6 @@
             }
 
             .card {
-                height: 400px;
                 margin-left: 15px;
                 margin-bottom: 15px;
             }
@@ -186,12 +232,8 @@
                 </div>
             </div>
         </section>
-{#        <div class="control">#}
-{#            <button onClick="location.href='/write?user={{ user }}';" class="button is-success is-rounded is-focused">#}
-{#                작성하러 가기#}
-{#            </button>#}
-{#        </div>#}
-        <div class="columns is-multiline is-mobile review-list" id="novel-box">
+
+        <div class="columns is-multiline is-mobile review-list" id="review-box">
             <div class="column is-one-third">
                 <div class="card">
                     <div class="card-content">
@@ -201,18 +243,9 @@
                                 <p class="subtitle is-6">무라카미 하루키</p>
                             </div>
                         </div>
-
-                        <div class="content is-italic">
-                            <p>나는 침대에서 나와 볕에 바랜 낡은 커튼을 제치고 창문을 연다. 얼굴을 내밀고 어두운 하늘을 올려다본다. 그곳에는 분명히 곰팡이가 슨 것 같은 칙칙한 색깔의
-                                반달이
-                                있다.
-                                이것으로 충분하다. 우리는 같은 기계의 같은 달을 보고 있다. 우리는 분명히 하나의 선으로 현실과 연결되어 있다. 나는 그것을 조용히 끌어 모으면 되는
-                                것이다. </p>
-                        </div>
                         <div class="content">
                             <p>하루키의 여자 주인공이 궁금하다면?</p>
                         </div>
-
                     </div>
                 </div>
             </div>
