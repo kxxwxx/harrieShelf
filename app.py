@@ -87,10 +87,9 @@ def read_reviews():
 def read_articles():
     # 1. DB에서 리뷰 정보 모두 가져오기
     type = request.args.get('type')
-    reviews = list(db.reviews.find({'type': type}, {'_id': 0}))
+    reviews = list(db.reviews.find({'type': type}, {'_id': 0}).limit(4))
     # 2. 성공 여부 & 리뷰 목록 반환하기
     return jsonify({'result': 'success', 'reviews': reviews})
-
 
 @app.route('/api/like', methods=['POST'])
 def like():
