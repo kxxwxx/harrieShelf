@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request
 import requests
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
+from urllib.parse import urljoin
 
 app = Flask(__name__)
 
@@ -47,15 +48,21 @@ def write_review():
     learn = int(request.form['learn'])
     angry = int(request.form['angry'])
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-    data = requests.get(url, headers=headers)
-    soup = BeautifulSoup(data.text, 'html.parser')
+    image = 'https://images.theconversation.com/files/302306/original/file-20191118-169393-r78x4o.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=675.0&fit=crop'
 
-    og_image = soup.select_one('meta[property="og:image"]')
-    image = ''
-    if og_image is not None:
-        image = og_image['content']
+    if type == '기사':
+        url = request.form['url']
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+        data = requests.get(url, headers=headers)
+        soup = BeautifulSoup(data.text, 'html.parser')
+        og_image = soup.select_one('meta[property="og:image"]')
+        if og_image is not None:
+            image_url = og_image['content']
+            if image_url.startswith('http'):
+                image = image_url
+            else:
+                image = urljoin(url, image_url)
 
     review = {
         'user': user,
@@ -87,7 +94,7 @@ def read_reviews():
 def read_articles():
     # 1. DB에서 리뷰 정보 모두 가져오기
     type = request.args.get('type')
-    reviews = list(db.reviews.find({'type': type}, {'_id': 0}).limit(4))
+    reviews = list(db.reviews.find({'type': type}, {'_id': 0}))
     # 2. 성공 여부 & 리뷰 목록 반환하기
     return jsonify({'result': 'success', 'reviews': reviews})
 
