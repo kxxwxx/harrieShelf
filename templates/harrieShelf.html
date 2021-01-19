@@ -31,12 +31,13 @@
 
             $(document).ready(function () {
                 $("#article-box").html("");
-                showReviewsByTypes();
+                showArticleReviews();
+                showNonfictionReviews();
             });
 
             // Article Card
 
-            function showReviewsByTypes() {
+            function showArticleReviews() {
                 $.ajax({
                     type: "GET",
                     url: "/types?type=기사",
@@ -77,6 +78,45 @@
                 $("#article-box").append(tempHtml);
             }
 
+            // Nonfiction Card
+
+            function showNonfictionReviews() {
+                $.ajax({
+                    type: "GET",
+                    url: "/types?type=실용서적",
+                    data: {},
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            let reviews = response["reviews"];
+                            for (let i = 0; i < reviews.length; i++) {
+                                makeNonfictionCard(reviews[i]["title"], reviews[i]["author"], reviews[i]["user"], reviews[i]["memo"]);
+                            }
+                        } else {
+                            alert("리뷰를 받아오지 못했습니다");
+                        }
+                    }
+                })
+            }
+
+            function makeNonfictionCard(title, author, user, memo) {
+                let tempHtml = `<div class="column is-one-quarter">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="media">
+                                        <div class="media-content">
+                                            <p class="title is-5">${title}</p>
+                                            <p class="subtitle is-6"> ${author} </p>
+                                            <p class="subtitle is-6"> updated by ${user} </p>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <p>${memo}</p>
+                                    </div>
+                                </div>
+                            </div>`;
+                $("#nonfiction-box").append(tempHtml);
+            }
+
         </script>
 
         <style>
@@ -97,6 +137,7 @@
             .review-title:hover {
                 text-decoration: underline;
             }
+
 
         </style>
 
@@ -161,8 +202,22 @@
                                 <strong>좋은 글 나누기</strong>
                             </a>
                         </p>
-                        <a class="navbar-item" href="#">
-                            <img src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-dog-quotes-1580508958.jpg?crop=0.670xw:1.00xh;0.167xw,0&resize=640:*">
+                        <a class="navbar-item" href="/">
+                            {% if login_user == '규원' %}
+                                <img src="{{ url_for('static', filename='kyu_profile.jpg') }}">
+                            {% elif login_user == '리아' %}
+                                <img src="{{ url_for('static', filename='lia_profile.jpg') }}">
+                            {% elif login_user == '재' %}
+                                <img src="{{ url_for('static', filename='jaeni_profile.jpg') }}">
+                            {% elif login_user == '배지' %}
+                                <img src="{{ url_for('static', filename='baeji_profile.jpg') }}">
+                            {% elif login_user == '김지' %}
+                                <img src="{{ url_for('static', filename='kimji_profile.jpg') }}">
+                            {% elif login_user == '이안' %}
+                                <img src="{{ url_for('static', filename='ian_profile.jpg') }}">
+                            {% elif login_user == 'Guest' %}
+                                <img src="{{ url_for('static', filename='ari_profile.jpg') }}">
+                            {% endif %}
                         </a>
                     </div>
 
@@ -204,7 +259,7 @@
                         <h5 class="subtitle is-5">함께 읽으면 좋을 온라인 기사</h5>
                     </div>
                     <br>
-                    <div class="columns is-multiline is-mobile" id="article-box">
+                    <div class="columns is-multiline is-mobile review-list" id="article-box">
                         <div class="column is-one-quarter">
                             <div class="card">
                                 <div class="card-image">
@@ -230,10 +285,15 @@
                 </div>
 
                 <div class="nonfiction-list widget">
-                    <h4 class="title is-4">‘일잘러’가 되기 위한 여정<br>
-                        WORK & LIFE에 도움되는 실용서
-                    </h4>
-                    <h5 class="subtitle is-5">해리언이 읽은 실용서적</h5>
+                    <div>
+                        <h4 class="title is-4">‘일잘러’가 되기 위한 여정<br>
+                            WORK & LIFE에 도움되는 실용서
+                        </h4>
+                        <h5 class="subtitle is-5">해리언이 읽은 실용서적</h5>
+                    </div>
+                    <br>
+                    <div class="columns is-multiline is-mobile review-list" id="nonfiction-box">
+                    </div>
                 </div>
 
 
