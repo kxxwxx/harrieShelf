@@ -33,6 +33,12 @@
                 $("#article-box").html("");
                 showArticleReviews();
                 showNonfictionReviews();
+                showFictionReviews();
+                $(".navbar-burger").click(function () {
+                    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                    $(".navbar-burger").toggleClass("is-active");
+                    $(".navbar-menu").toggleClass("is-active");
+                });
             });
 
             // Article Card
@@ -117,6 +123,45 @@
                 $("#nonfiction-box").append(tempHtml);
             }
 
+            // Nonfiction Card
+
+            function showFictionReviews() {
+                $.ajax({
+                    type: "GET",
+                    url: "/types?type=소설책",
+                    data: {},
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            let reviews = response["reviews"];
+                            for (let i = 0; i < reviews.length; i++) {
+                                makeFictionCard(reviews[i]["title"], reviews[i]["author"], reviews[i]["user"], reviews[i]["memo"]);
+                            }
+                        } else {
+                            alert("리뷰를 받아오지 못했습니다");
+                        }
+                    }
+                })
+            }
+
+            function makeFictionCard(title, author, user, memo) {
+                let tempHtml = `<div class="column is-one-quarter">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="media">
+                                        <div class="media-content">
+                                            <p class="title is-5">${title}</p>
+                                            <p class="subtitle is-6"> ${author} </p>
+                                            <p class="subtitle is-6"> updated by ${user} </p>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <p>${memo}</p>
+                                    </div>
+                                </div>
+                            </div>`;
+                $("#fiction-box").append(tempHtml);
+            }
+
         </script>
 
         <style>
@@ -138,6 +183,9 @@
                 text-decoration: underline;
             }
 
+            .profile-small-img {
+                max-height: 4rem;
+            }
 
         </style>
 
@@ -204,9 +252,11 @@
                         </p>
                         <a class="navbar-item" href="/">
                             {% if login_user == '규원' %}
-                                <img src="{{ url_for('static', filename='kyu_profile.jpg') }}">
+                                <img class="profile-small-img"
+                                     src="{{ url_for('static', filename='kyu_profile.jpg') }}">
                             {% elif login_user == '리아' %}
-                                <img src="{{ url_for('static', filename='lia_profile.jpg') }}">
+                                <img class="profile-small-img"
+                                     src="{{ url_for('static', filename='lia_profile.jpg') }}">
                             {% elif login_user == '재' %}
                                 <img src="{{ url_for('static', filename='jaeni_profile.jpg') }}">
                             {% elif login_user == '배지' %}
@@ -259,28 +309,7 @@
                         <h5 class="subtitle is-5">함께 읽으면 좋을 온라인 기사</h5>
                     </div>
                     <br>
-                    <div class="columns is-multiline is-mobile review-list" id="article-box">
-                        <div class="column is-one-quarter">
-                            <div class="card">
-                                <div class="card-image">
-                                    <figure class="image is-4by3">
-                                        <img src="https://bulma.io/images/placeholders/1280x960.png"
-                                             alt="Placeholder image">
-                                    </figure>
-                                </div>
-                                <div class="card-content">
-                                    <div class="media">
-                                        <div class="media-content">
-                                            <a href="#" class="review-title title is-5">기사 제목</a>
-                                            <p class="subtitle is-6">Updated by {{ login_user }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <p>다들 시간 날 때 읽어봐!</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="columns is-multiline is-mobile" id="article-box">
                     </div>
                 </div>
 
@@ -292,19 +321,22 @@
                         <h5 class="subtitle is-5">해리언이 읽은 실용서적</h5>
                     </div>
                     <br>
-                    <div class="columns is-multiline is-mobile review-list" id="nonfiction-box">
+                    <div class="columns is-multiline is-mobile" id="nonfiction-box">
                     </div>
                 </div>
 
 
                 <div class="fiction-list widget">
-                    <h4 class="title is-4">주말에 읽기에 딱!<br>
-                        더 즐거운 인생을 위한 소설책
-                    </h4>
-                    <h5 class="subtitle is-5">시간이 없어도 이 소설만큼은 읽어야 해</h5>
+                    <div>
+                        <h4 class="title is-4">주말에 읽기에 딱!<br>
+                            더 즐거운 인생을 위한 소설책
+                        </h4>
+                        <h5 class="subtitle is-5">시간이 없어도 이 소설만큼은 읽어야 해</h5>
+                    </div>
+                    <br>
+                    <div class="columns is-multiline is-mobile" id="fiction-box">
+                    </div>
                 </div>
-
-
             </div>
     </body>
 </html>
