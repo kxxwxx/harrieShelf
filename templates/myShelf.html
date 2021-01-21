@@ -48,7 +48,7 @@
                             let reviews = response["reviews"];
                             // 3. 요청 성공했을 때 리뷰를 올바르게 화면에 나타내기
                             for (let i = 0; i < reviews.length; i++) {
-                                makeCard(reviews[i]["title"], reviews[i]["author"], reviews[i]["url"], reviews[i]["memo"], reviews[i]["like"], reviews[i]["learn"], reviews[i]["angry"]);
+                                makeCard(reviews[i]["title"], reviews[i]["author"], reviews[i]["type"], reviews[i]["url"], reviews[i]["memo"], reviews[i]["like"], reviews[i]["learn"], reviews[i]["angry"]);
                             }
                         } else {
                             alert("리뷰를 받아오지 못했습니다");
@@ -57,27 +57,19 @@
                 })
             }
 
-            function makeCard(title, author, url, memo, like, learn, angry) {
+            function makeCard(title, author, type, url, memo, like, learn, angry) {
                 let tempHtml = `<div class="column is-one-third">
                                     <div class="card">
-                                    <div class="card-content">
-                                      <div class="media">
-                                        <div class="media-content">
-                                          <a href="${url}" class="review-title title is-4">${title}</a>
-                                          <p class="subtitle is-6">${author}</p>
-                                        </div>
-                                       </div>
-                                        <div class="content">
+                                        <div class="card-content">
+                                            <a href="${url}" class="review-title title is-4">${title} <span class="tag is-link is-light">${type}</span></a>
+                                            <p class="subtitle is-6">${author}</p>
                                             <p>${memo}</p>
                                         </div>
-                                        <div class="content">
-                                        </div>
-                                      </div>
                                         <footer class="card-footer">
-<a href="#" onclick="likeBook('${title}')" class="card-footer-item has-text-info">🤣 : ${like}</a>
-<a href="#" onclick="learnBook('${title}')" class="card-footer-item has-text-info">🤓 : ${learn}</a>
-<a href="#" onclick="angryBook('${title}')" class="card-footer-item has-text-info">😡 : ${angry}</a>
-                                        </footer>
+                                            <a href="#" onclick="likeBook('${title}')" class="card-footer-item has-text-info">🤣 : ${like}</a>
+                                            <a href="#" onclick="learnBook('${title}')" class="card-footer-item has-text-info">🤓 : ${learn}</a>
+                                            <a href="#" onclick="angryBook('${title}')" class="card-footer-item has-text-info">😡 : ${angry}</a>
+                                         </footer>
                                     </div>
                                 </div>`;
                 $("#review-box").append(tempHtml);
@@ -159,7 +151,6 @@
             <div class="container">
                 <div class="navbar-brand">
                     <a class="navbar-item" href="/home?login_user={{ login_user }}">HARRIE SHELF</a>
-                    {#                        <img src="#" alt="#" width="112" height="28">#}
                     <div id="navbarBurger" class="navbar-burger" data-target="navMenuDocumentation">
                         <span></span>
                         <span></span>
@@ -172,7 +163,7 @@
 
                     </div>
                     <div class="navbar-end">
-                        <a class="navbar-item" href="/myshelf?user={{ login_user }}&login_user={{ login_user }}">
+                        <a class="navbar-item" href="/myshelf?user={{ user }}&login_user={{ login_user }}">
                             <span class="icon">
                                 <i class="fas fa-heart"></i>
                               </span>
@@ -215,7 +206,32 @@
                                 <strong>좋은 글 나누기</strong>
                             </a>
                         </p>
+                        <a class="navbar-item" href="/">
+                            {% if login_user == '규원' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='kyu_profile.jpg') }}">
+                            {% elif login_user == '리아' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='lia_profile.jpg') }}">
+                            {% elif login_user == '재' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='jaeni_profile.jpg') }}">
+                            {% elif login_user == '배지' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='baeji_profile.jpg') }}">
+                            {% elif login_user == '김지' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='kimji_profile.jpg') }}">
+                            {% elif login_user == '이안' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='ian_profile.jpg') }}">
+                            {% elif login_user == 'Guest' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='ari_profile.jpg') }}">
+                            {% endif %}
+                        </a>
                     </div>
+
                 </div>
             </div>
         </nav>
@@ -230,8 +246,10 @@
                         안녕하세요. {{ user }}의 서재입니다!
                     </h2>
                 </div>
+
             </div>
         </section>
+
 
         <div class="columns is-multiline is-mobile review-list" id="review-box">
             <div class="column is-one-third">

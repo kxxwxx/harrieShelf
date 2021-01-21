@@ -124,7 +124,6 @@
             <div class="container">
                 <div class="navbar-brand">
                     <a class="navbar-item" href="/home?login_user={{ login_user }}">HARRIE SHELF</a>
-                    {#                        <img src="#" alt="#" width="112" height="28">#}
                     <div id="navbarBurger" class="navbar-burger" data-target="navMenuDocumentation">
                         <span></span>
                         <span></span>
@@ -180,7 +179,32 @@
                                 <strong>좋은 글 나누기</strong>
                             </a>
                         </p>
+                        <a class="navbar-item" href="/">
+                            {% if login_user == '규원' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='kyu_profile.jpg') }}">
+                            {% elif login_user == '리아' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='lia_profile.jpg') }}">
+                            {% elif login_user == '재' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='jaeni_profile.jpg') }}">
+                            {% elif login_user == '배지' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='baeji_profile.jpg') }}">
+                            {% elif login_user == '김지' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='kimji_profile.jpg') }}">
+                            {% elif login_user == '이안' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='ian_profile.jpg') }}">
+                            {% elif login_user == 'Guest' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='ari_profile.jpg') }}">
+                            {% endif %}
+                        </a>
                     </div>
+
                 </div>
             </div>
         </nav>
