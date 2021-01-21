@@ -6,7 +6,7 @@ from urllib.parse import urljoin
 
 app = Flask(__name__)
 
-client = MongoClient('localhost', 27017)  # mongoDB는 27017 포트로 돌아갑니다.
+client = MongoClient('mongodb://kyuwon:kyuwon@52.79.211.190',27017)
 db = client.harrie
 
 
@@ -94,7 +94,10 @@ def read_reviews():
 def read_articles():
     # 1. DB에서 리뷰 정보 모두 가져오기
     type = request.args.get('type')
-    reviews = list(db.reviews.find({'type': type}, {'_id': 0}).sort({'_id':-1}).limit(4))
+    skip_count = max(0, db.reviews.find({'type': type}).count() - 4)
+    reviews = list(db.reviews.find({'type': type}, {'_id': 0}).skip(skip_count))
+
+    reviews.reverse()
     # 2. 성공 여부 & 리뷰 목록 반환하기
     return jsonify({'result': 'success', 'reviews': reviews})
 
@@ -123,6 +126,13 @@ def angry():
     new_angry = book['angry'] + 1
     db.reviews.update_one({'title': title}, {'$set': {'angry': new_angry}})
     return jsonify({'result': 'success'})
+
+@app.route('/top', methods=['GET'])
+def read_top_reviews():
+    # 1. DB에서 리뷰 정보 모두 가져오기
+    top_reviews = list(db.reviews.find({}, {'_id': False}).sort('like', -1).limit(5))
+    # 2. 성공 여부 & 리뷰 목록 반환하기
+    return jsonify({'result': 'success', 'top_reviews': top_reviews})
 
 
 if __name__ == '__main__':

@@ -13,6 +13,11 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
         <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
 
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&display=swap"
+              rel="stylesheet">
+
         <!-- JS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
@@ -31,6 +36,7 @@
 
             $(document).ready(function () {
                 $("#article-box").html("");
+                showTopReviews();
                 showArticleReviews();
                 showNonfictionReviews();
                 showFictionReviews();
@@ -40,6 +46,39 @@
                     $(".navbar-menu").toggleClass("is-active");
                 });
             });
+
+            // Top review list
+
+            function showTopReviews() {
+
+                $('#top-list').empty()
+
+                $.ajax({
+                    type: "GET",
+                    url: "/top",
+                    data: {},
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            let top_reviews = response["top_reviews"];
+                            for (let i = 0; i < top_reviews.length; i++) {
+                                makeTopList(top_reviews[i]["title"], top_reviews[i]["author"], top_reviews[i]["user"], top_reviews[i]["type"], top_reviews[i]["memo"]);
+                            }
+                        } else {
+                            alert("리뷰를 받아오지 못했습니다");
+                        }
+                    }
+                })
+            }
+
+            function makeTopList(title, author, user, type, memo) {
+                let tempHtml = `<li class="list-number">
+                                    <h6 class="title is-5">${title}, ${author} <span class="tag is-link is-light">${type}</span></h6>
+                                    <h6 class="subtitle is-6">Updated by ${user}</h6>
+                                    <p class="list-text">${memo}</p>
+                                </li>
+                                <br>`;
+                $("#top-list").append(tempHtml);
+            }
 
             // Article Card
 
@@ -123,7 +162,7 @@
                 $("#nonfiction-box").append(tempHtml);
             }
 
-            // Nonfiction Card
+            // Fiction Card
 
             function showFictionReviews() {
                 $.ajax({
@@ -165,6 +204,10 @@
         </script>
 
         <style>
+            * {
+                font-family: 'Noto Serif KR', serif;
+            }
+
             .doc {
                 padding-left: 9rem;
                 padding-right: 9rem;
@@ -175,16 +218,22 @@
                 margin-bottom: 50px;
             }
 
+            .list-number {
+                font-weight: bold;
+                color: green;
+            }
+
+            .list-text {
+                color: black;
+                font-weight: lighter;
+            }
+
             .review-title {
                 display: inline-block;
             }
 
             .review-title:hover {
                 text-decoration: underline;
-            }
-
-            .profile-small-img {
-                max-height: 4rem;
             }
 
         </style>
@@ -252,21 +301,26 @@
                         </p>
                         <a class="navbar-item" href="/">
                             {% if login_user == '규원' %}
-                                <img class="profile-small-img"
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
                                      src="{{ url_for('static', filename='kyu_profile.jpg') }}">
                             {% elif login_user == '리아' %}
-                                <img class="profile-small-img"
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
                                      src="{{ url_for('static', filename='lia_profile.jpg') }}">
                             {% elif login_user == '재' %}
-                                <img src="{{ url_for('static', filename='jaeni_profile.jpg') }}">
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='jaeni_profile.jpg') }}">
                             {% elif login_user == '배지' %}
-                                <img src="{{ url_for('static', filename='baeji_profile.jpg') }}">
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='baeji_profile.jpg') }}">
                             {% elif login_user == '김지' %}
-                                <img src="{{ url_for('static', filename='kimji_profile.jpg') }}">
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='kimji_profile.jpg') }}">
                             {% elif login_user == '이안' %}
-                                <img src="{{ url_for('static', filename='ian_profile.jpg') }}">
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='ian_profile.jpg') }}">
                             {% elif login_user == 'Guest' %}
-                                <img src="{{ url_for('static', filename='ari_profile.jpg') }}">
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='ari_profile.jpg') }}">
                             {% endif %}
                         </a>
                     </div>
@@ -284,7 +338,7 @@
                                 {{ user }}님, 시간 날 때 읽어보세요😎
                             </h1>
                             <h2 class="subtitle">
-                                HARRIE TELCO팀의 마음이 차곡차곡 쌓이는 해리 서재.<br>
+                                Harrie Telco팀의 마음이 차곡차곡 쌓이는 해리 서재.<br>
                                 서로에게 카톡으로, 전화로, 말로 추천해주던 책과 기사를 이곳에서 나눠주세요.<br>
                                 해리 서재는 해리언들과 함께 성장합니다.<br>
                             </h2>
@@ -297,46 +351,59 @@
             <div class="doc">
 
                 <div class="top-list widget">
-                    <h4 class="title is-4">해리 서재 인기 TOP 7</h4>
-                    <h5 class="subtitle is-5">해리언들이 가장 뜨거운 반응을 보여준 Top 7</h5>
-                </div>
-
-                <div class="article-list widget">
                     <div>
-                        <h4 class="title is-4">3분이면 충분해!<br>
-                            같이 읽고 떠들기 위한 기사
-                        </h4>
-                        <h5 class="subtitle is-5">함께 읽으면 좋을 온라인 기사</h5>
+                        <h4 class="title is-4">해리 서재 인기 TOP 5</h4>
+                        <h6 class="subtitle is-6">해리언들이 가장 뜨거운 반응을 보여준 책과 기사</h6>
                     </div>
                     <br>
-                    <div class="columns is-multiline is-mobile" id="article-box">
-                    </div>
-                </div>
-
-                <div class="nonfiction-list widget">
                     <div>
-                        <h4 class="title is-4">‘일잘러’가 되기 위한 여정<br>
-                            WORK & LIFE에 도움되는 실용서
-                        </h4>
-                        <h5 class="subtitle is-5">해리언이 읽은 실용서적</h5>
+                        <div class="content">
+                            <ol type="1" id="top-list">
+                                <li class="list-number">
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                     <br>
-                    <div class="columns is-multiline is-mobile" id="nonfiction-box">
-                    </div>
-                </div>
 
-
-                <div class="fiction-list widget">
-                    <div>
-                        <h4 class="title is-4">주말에 읽기에 딱!<br>
-                            더 즐거운 인생을 위한 소설책
-                        </h4>
-                        <h5 class="subtitle is-5">시간이 없어도 이 소설만큼은 읽어야 해</h5>
+                    <div class="article-list widget">
+                        <div>
+                            <h4 class="title is-4">3분이면 충분해!<br>
+                                같이 읽고 떠들기 위한 기사
+                            </h4>
+                            <h6 class="subtitle is-6">함께 읽으면 좋을 온라인 기사</h6>
+                        </div>
+                        <br>
+                        <div class="columns is-multiline is-mobile" id="article-box">
+                        </div>
                     </div>
                     <br>
-                    <div class="columns is-multiline is-mobile" id="fiction-box">
+
+                    <div class="nonfiction-list widget">
+                        <div>
+                            <h4 class="title is-4">‘일잘러’가 되기 위한 여정<br>
+                                Work & Life에 도움되는 실용서
+                            </h4>
+                            <h6 class="subtitle is-6">해리언이 읽은 실용서적</h6>
+                        </div>
+                        <br>
+                        <div class="columns is-multiline is-mobile" id="nonfiction-box">
+                        </div>
+                    </div>
+                    <br>
+
+
+                    <div class="fiction-list widget">
+                        <div>
+                            <h4 class="title is-4">주말에 읽기에 딱!<br>
+                                더 즐거운 인생을 위한 소설책
+                            </h4>
+                            <h6 class="subtitle is-6">시간이 없어도 이 소설만큼은 읽어야 해</h6>
+                        </div>
+                        <br>
+                        <div class="columns is-multiline is-mobile" id="fiction-box">
+                        </div>
                     </div>
                 </div>
-            </div>
     </body>
 </html>
