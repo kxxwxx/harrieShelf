@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Webpage Title -->
+        <title>도서 종류별로 살펴보기 | HARRIE SHELF</title>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="/static/images/favicon.png">
+
+        <!-- Bulma CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+        <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&display=swap"
+              rel="stylesheet">
+
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+
+
+        </script>
+
+
+    </head>
+    <body>
+        <nav id="navbar" class="bd-navbar navbar has-shadow is-spaced">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/home?login_user={{ login_user }}">HARRIE SHELF</a>
+                    <div id="navbarBurger" class="navbar-burger" data-target="navMenuDocumentation">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="navbar-menu">
+                    <div class="navbar-start">
+
+                    </div>
+                    <div class="navbar-end">
+                        <a class="navbar-item" href="/myshelf?user={{ user }}&login_user={{ login_user }}">
+                            <span class="icon">
+                                <i class="fas fa-heart"></i>
+                              </span>
+                            <span>내 서재 입장하기</span>
+                        </a>
+
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link" href="#">
+                                <span class="icon">
+                                <i class="fas fa-book"></i>
+                                </span>
+                                <span>해리언 서재 둘러보기</span>
+                            </a>
+                            <div id="moreDropdown" class="navbar-dropdown">
+                                <a class="navbar-item" href="/myshelf?user=규원&login_user={{ login_user }}">
+                                    규원
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=리아&login_user={{ login_user }}">
+                                    리아
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=재니&login_user={{ login_user }}">
+                                    재니
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=배지&login_user={{ login_user }}">
+                                    배지
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=김지&login_user={{ login_user }}">
+                                    김지
+                                </a>
+                                <a class="navbar-item" href="/myshelf?user=이안&login_user={{ login_user }}">
+                                    이안
+                                </a>
+                            </div>
+                        </div>
+                        <p class="control">
+                            <a class="button is-link is-light" href="/write?login_user={{ login_user }}">
+                                <span class="icon">
+                                <i class="fas fa-pen"></i>
+                                </span>
+                                <strong>좋은 글 나누기</strong>
+                            </a>
+                        </p>
+                        <a class="navbar-item" href="/">
+                            {% if login_user == '규원' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='kyu_profile.jpg') }}">
+                            {% elif login_user == '리아' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='lia_profile.jpg') }}">
+                            {% elif login_user == '재' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='jaeni_profile.jpg') }}">
+                            {% elif login_user == '배지' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='baeji_profile.jpg') }}">
+                            {% elif login_user == '김지' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='kimji_profile.jpg') }}">
+                            {% elif login_user == '이안' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='ian_profile.jpg') }}">
+                            {% elif login_user == 'Guest' %}
+                                <img style="max-height: 2.7rem; border-radius: 100px;"
+                                     src="{{ url_for('static', filename='ari_profile.jpg') }}">
+                            {% endif %}
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero is-medium is-bold">
+            <div class="hero-body">
+                <div class="container center">
+                    <h1 class="title">
+                        {{ type }}
+                    </h1>
+                    <h2 class="subtitle">
+                        해리언이 게시한 {{ type }} 모아보기
+                    </h2>
+                </div>
+
+            </div>
+        </section>
+
+
+        <div class="container columns is-multiline is-mobile review-list" id="review-box">
+        </div>
+
+    </body>
+</html>
