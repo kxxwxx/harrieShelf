@@ -35,6 +35,12 @@ def get_myshelf_page():
     user = request.args.get('user')
     return render_template('myShelf.html', user=user, login_user=login_user)
 
+@app.route('/category')
+def get_category_page():
+    login_user = request.args.get('login_user')
+    user = login_user
+    return render_template('category.html', user=user, login_user=login_user)
+
 
 @app.route('/reviews', methods=['POST'])
 def write_review():
@@ -129,11 +135,15 @@ def angry():
 
 @app.route('/top', methods=['GET'])
 def read_top_reviews():
-    # 1. DB에서 리뷰 정보 모두 가져오기
-    top_reviews = list(db.reviews.find({}, {'_id': False}).sort('like', -1).limit(5))
-    # 2. 성공 여부 & 리뷰 목록 반환하기
-    return jsonify({'result': 'success', 'top_reviews': top_reviews})
-
+    top_reviews = list(db.reviews.find({}, {'_id': False}))
+    for top_review in top_reviews:
+        like = int(top_reviews['like'])
+        learn = int(top_reviews['learn'])
+        angry = int(top_reviews['learn'])
+        reaction = like + learn + angry
+        top_review['reaction'] = reaction
+    top_reviews.sort(key=lambda x: x['reaction'])
+    print(top_reviews)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
