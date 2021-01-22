@@ -48,7 +48,7 @@
                             let reviews = response["reviews"];
                             // 3. 요청 성공했을 때 리뷰를 올바르게 화면에 나타내기
                             for (let i = 0; i < reviews.length; i++) {
-                                makeCard(reviews[i]["title"], reviews[i]["author"], reviews[i]["type"], reviews[i]["url"], reviews[i]["memo"], reviews[i]["like"], reviews[i]["learn"], reviews[i]["angry"]);
+                                makeArticleCard(reviews[i]["title"], reviews[i]["author"], reviews[i]["type"], reviews[i]["url"], reviews[i]["memo"], reviews[i]["like"], reviews[i]["learn"], reviews[i]["angry"]);
                             }
                         } else {
                             alert("리뷰를 받아오지 못했습니다");
@@ -57,11 +57,47 @@
                 })
             }
 
-            function makeCard(title, author, type, url, memo, like, learn, angry) {
+            function makeArticleCard(title, author, type, url, memo, like, learn, angry) {
                 let tempHtml = `<div class="column is-one-third">
                                     <div class="card">
                                         <div class="card-content">
-                                            <a href="${url}" class="review-title title is-4">${title} <span class="tag is-link is-light">${type}</span></a>
+                                            <a href="${url}" class="article-title title is-4">${title} <span class="tag is-link is-light">${type}</span></a>
+                                            <p class="subtitle is-6">${author}</p>
+                                            <p>${memo}</p>
+                                        </div>
+                                        <footer class="card-footer">
+                                            <a href="#" onclick="likeBook('${title}')" class="card-footer-item has-text-info">🤣 : ${like}</a>
+                                            <a href="#" onclick="learnBook('${title}')" class="card-footer-item has-text-info">🤓 : ${learn}</a>
+                                            <a href="#" onclick="angryBook('${title}')" class="card-footer-item has-text-info">😡 : ${angry}</a>
+                                         </footer>
+                                    </div>
+                                </div>`;
+                $("#review-box").append(tempHtml);
+            }
+
+            function makeNonfictionCard(title, author, type, url, memo, like, learn, angry) {
+                let tempHtml = `<div class="column is-one-third">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <a href="${url}" class="book-title title is-4">${title} <span class="tag is-success is-light">${type}</span></a>
+                                            <p class="subtitle is-6">${author}</p>
+                                            <p>${memo}</p>
+                                        </div>
+                                        <footer class="card-footer">
+                                            <a href="#" onclick="likeBook('${title}')" class="card-footer-item has-text-info">🤣 : ${like}</a>
+                                            <a href="#" onclick="learnBook('${title}')" class="card-footer-item has-text-info">🤓 : ${learn}</a>
+                                            <a href="#" onclick="angryBook('${title}')" class="card-footer-item has-text-info">😡 : ${angry}</a>
+                                         </footer>
+                                    </div>
+                                </div>`;
+                $("#review-box").append(tempHtml);
+            }
+
+            function makeFictionCard(title, author, type, url, memo, like, learn, angry) {
+                let tempHtml = `<div class="column is-one-third">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <a href="${url}" class="book-title title is-4">${title} <span class="tag is-warning is-light">${type}</span></a>
                                             <p class="subtitle is-6">${author}</p>
                                             <p>${memo}</p>
                                         </div>
@@ -120,21 +156,27 @@
 
         </script>
         <style>
+            .container {
+                display: flex;
+                flex-direction: row;
+            }
+
+
             .center {
                 text-align: center;
             }
 
-            .review-list {
-                width: 1090px;
-                margin: 20px auto auto auto;
-            }
 
-            .review-title {
+            .article-title {
                 display: inline-block;
             }
 
-            .review-title:hover {
+            .article-title:hover {
                 text-decoration: underline;
+            }
+
+            .book-title {
+                display: inline-block;
             }
 
             .card {
@@ -251,7 +293,7 @@
         </section>
 
 
-        <div class="columns is-multiline is-mobile review-list" id="review-box">
+        <div class="container columns is-multiline is-mobile review-list" id="review-box">
             <div class="column is-one-third">
                 <div class="card">
                     <div class="card-content">
